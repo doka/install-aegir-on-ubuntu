@@ -1,8 +1,9 @@
 Aegir install script for Ubuntu10.4 LTS server
 ----------------------------------------------
-(install-aegir-on-ubuntu.sh)
-It installs Aegir 4.0 (http://aegirproject.org/) with all prerequisites together
-on a bare Ubuntu 10.4 LTS server on a local network.
+https://github.com/doka/install-aegir-on-ubuntu/raw/master/install-aegir-on-ubuntu.sh
+
+It installs Aegir 0.4 (http://aegirproject.org/) with all prerequisites
+together on a bare Ubuntu 10.4 LTS server on a local network.
 
 
 This script helps Aegir users
@@ -15,7 +16,7 @@ This script helps Aegir users
 
 Getting started
 ---------------
-- install a bare Ubuntu 10.4 LTS server, optionally with OpenSSH
+- install a bare Ubuntu 10.4 LTS server, with OpenSSH
 - login and switch to root ('sudo su')
 - set a fix IP address to the server
 - download this script
@@ -27,11 +28,13 @@ Getting started
 
 Restrictions
 ------------
+- the install script works with Aegir 0.4-rc1 or 0.4-beta2,
+  use the respective tag
 - Do not use on production environments
 - It has no security hardening
 
 
-űMaintainers
+Maintainers
 -----------
 - doka@wepoca.net
 
