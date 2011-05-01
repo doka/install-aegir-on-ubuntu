@@ -1,57 +1,90 @@
+#! /bin/bash
 #
-# Aegir install script on Ubuntu 10.4 LTS server
+# Aegir 1.1 install script for Ubuntu 10.4 LTS (Lucid) servers
 # (install-aegir-on-ubuntu.sh)
 #
-# run as root (sudo su)
+# run with users having sudo rights
 #
+
+# Prerequisites:
+#  - bare ubuntu server install, with OpenSSH server
+#
+#  - change /etc/hostname 
+#        set hostname to $MYFQDN
+#
+#  - static IP address in /etc/network/interfaces
+#       auto eth0
+#       iface eth0 inet static
+#       address 192.168.1.101
+#       network 192.168.1.0
+#       netmask 255.255.255.0
+#       gateway 192.168.1.1
+#
+
 # todo:
-#	add drush symlink
-#	add better comments
+#       - 
 #
-# set some parameters: 
-MYHOST="myhost.local"
-MYIP="192.168.2.111"
+
 #
-# software requirements
+#    1. set some parameters in the script
+#  
+MYHOST="myhost"
+MYHOSTIP="192.168.1.101"
+MYFQDN=$MYHOST".local"
+#       admin.$MYFQDN will be the Aegir admin interface
+
 #
-apt-get install apache2 php5 php5-cli php5-gd php5-mysql mysql-server
-apt-get install postfix rsync git-core unzip acpid phpmyadmin
+#    2. install software requirements by Aegir, but not preinstalled on a bare Ubuntu server
 #
-# DNS Configuration
-# admin.$MYHOST is the Aegir admin interface
-echo $MYHOST > /etc/hostname
-echo $MYIP $MYHOST admin.$MYHOST >> /etc/hosts
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install apache2 php5 php5-cli php5-gd php5-mysql mysql-server postfix git-core unzip 
+
 #
-# Aegir user
-adduser --system --group --home /var/aegir aegir
-adduser aegir www-data
-usermod -s /bin/bash aegir
-passwd aegir
+#    3. FQDN Configuration
 #
+# update /etc/hosts
+echo '# Aegir FQDN'                             | sudo tee -a /etc/hosts
+echo $MYHOSTIP    $MYFQDN admin.$MYFQDN $MYHOST | sudo tee -a /etc/hosts
+#       $MYFQDN has to stand right after the IP, otherwise DNS won't work
+
 #
-# PHP Configuration
-sed -i 's/memory_limit = -1/memory_limit = 192M/' /etc/php5/cli/php.ini
+#    4. LAMP configurations
 #
+# PHP: set higher memory limits
+sudo sed -i 's/memory_limit = -1/memory_limit = 192M/' /etc/php5/cli/php.ini
 #
-# Apache configuration
-a2enmod rewrite
-ln -s /var/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
-echo 'aegir ALL=NOPASSWD: /usr/sbin/apache2ctl' >> /etc/sudoers
+# Apache
+sudo a2enmod rewrite
+sudo ln -s /var/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
+echo 'aegir ALL=NOPASSWD: /usr/sbin/apache2ctl' | sudo tee -a /etc/sudoers
 #
+# MySQL: enable all IP addresses to bind
+sudo sed -i 's/bind-address/#bind-address/' /etc/mysql/my.cnf
+sudo /etc/init.d/mysql restart
+
 #
-# Database configuration
-sed -i 's/bind-address/#bind-address/' /etc/mysql/my.cnf
-/etc/init.d/mysql restart
+#   5. Aegir install
 #
+# add Aegir user
+sudo adduser --system --group --home /var/aegir aegir
+sudo adduser aegir www-data
 #
-# Aegir install script
-wget -O install.sh 'http://git.aegirproject.org/?p=provision.git;a=blob_plain;f=install.sh.txt;hb=provision-0.4-rc1'
-su -s /bin/sh aegir -c "sh install.sh"
+# Drush install from PPA https://launchpad.net/~brianmercer/+archive/drush
+sudo apt-get install python-software-properties
+sudo add-apt-repository ppa:brianmercer/drush
+sudo apt-get update
+sudo apt-get install drush
+sudo ln -s /var/aegir/drush/drush /usr/local/bin/drush
 #
+# install provision backend by drush
+echo "installing provision backend ..."
+sudo su -s /bin/sh aegir -c "drush dl --destination=/var/aegir/.drush provision-6.x"
 #
-# Add a symlink for Drush:
-ln -s /var/aegir/drush/drush.php /bin/drush
-#
+# install hostmaster frontend by drush
+echo "installing frontend: Drupal 6 with hostmaster profile ..."
+sudo su -s /bin/sh aegir -c "drush hostmaster-install"
+
 #
 # Checkpoint / Finished!
 #
@@ -60,5 +93,6 @@ ln -s /var/aegir/drush/drush.php /bin/drush
 # first time.
 #
 # Do not forget to add all the domains you are going to manage by Aegir,
-# to your /etc/hosts files!
-#
+# to your /etc/hosts files, like this:
+echo $MYHOSTIP    $MYFQDN admin.$MYFQDN www.$MYFQDN
+
