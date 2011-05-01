@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# Aegir 1.1 install script for Ubuntu 10.10 (Maverick) servers
+# Aegir 1.1 install script for Ubuntu 11.04 (Natty) servers
 # (install-aegir-on-ubuntu.sh)
 #
 # run with users having sudo rights

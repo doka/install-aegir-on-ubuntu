@@ -1,5 +1,5 @@
-Aegir install script for Ubuntu 10.10 (Maverick) servers
-----------------------------------------------
+Aegir 1.1 install script for Ubuntu 11.04 (Natty) servers
+---------------------------------------------------------
 https://github.com/doka/install-aegir-on-ubuntu/raw/master/install-aegir-on-ubuntu.sh
 
 It installs Aegir 1.1 (http://aegirproject.org/) with all prerequisites
