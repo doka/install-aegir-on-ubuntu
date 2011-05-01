@@ -20,11 +20,6 @@
 #       netmask 255.255.255.0
 #       gateway 192.168.1.1
 #
-
-# todo:
-#       - 
-#
-
 #
 #    1. set some parameters in the script
 #  
@@ -32,14 +27,14 @@ MYHOST="myhost"
 MYHOSTIP="192.168.1.101"
 MYFQDN=$MYHOST".local"
 #       admin.$MYFQDN will be the Aegir admin interface
-
+#
 #
 #    2. install software requirements by Aegir, but not preinstalled on a bare Ubuntu server
 #
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt-get install apache2 php5 php5-cli php5-gd php5-mysql mysql-server postfix git-core unzip 
-
+#
 #
 #    3. FQDN Configuration
 #
@@ -47,7 +42,7 @@ sudo apt-get install apache2 php5 php5-cli php5-gd php5-mysql mysql-server postf
 echo '# Aegir FQDN'                             | sudo tee -a /etc/hosts
 echo $MYHOSTIP    $MYFQDN admin.$MYFQDN $MYHOST | sudo tee -a /etc/hosts
 #       $MYFQDN has to stand right after the IP, otherwise DNS won't work
-
+#
 #
 #    4. LAMP configurations
 #
@@ -62,7 +57,7 @@ echo 'aegir ALL=NOPASSWD: /usr/sbin/apache2ctl' | sudo tee -a /etc/sudoers
 # MySQL: enable all IP addresses to bind
 sudo sed -i 's/bind-address/#bind-address/' /etc/mysql/my.cnf
 sudo /etc/init.d/mysql restart
-
+#
 #
 #   5. Aegir install
 #
@@ -84,7 +79,7 @@ sudo su -s /bin/sh aegir -c "drush dl --destination=/var/aegir/.drush provision-
 # install hostmaster frontend by drush
 echo "installing frontend: Drupal 6 with hostmaster profile ..."
 sudo su -s /bin/sh aegir -c "drush hostmaster-install"
-
+#
 #
 # Checkpoint / Finished!
 #
