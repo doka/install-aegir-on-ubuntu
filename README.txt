@@ -1,4 +1,4 @@
-Aegir install script for Ubuntu 10.4 LTS (Lucid) servers
+Aegir install script for Ubuntu 10.10 (Maverick) servers
 ----------------------------------------------
 https://github.com/doka/install-aegir-on-ubuntu/raw/master/install-aegir-on-ubuntu.sh
 
@@ -28,7 +28,7 @@ Getting started
 
 Restrictions
 ------------
-- the install script works with Aegir 1.1 (or 0.4-rc1, 0.4-beta2),
+- the install script works with Aegir 1.1,
   use the respective tag
 - Do not use on production environments
 - It has no security hardening

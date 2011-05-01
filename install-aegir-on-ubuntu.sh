@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# Aegir 1.1 install script for Ubuntu 10.4 LTS (Lucid) servers
+# Aegir 1.1 install script for Ubuntu 10.10 (Maverick) servers
 # (install-aegir-on-ubuntu.sh)
 #
 # run with users having sudo rights
@@ -52,7 +52,9 @@ sudo sed -i 's/memory_limit = -1/memory_limit = 192M/' /etc/php5/cli/php.ini
 # Apache
 sudo a2enmod rewrite
 sudo ln -s /var/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
-echo 'aegir ALL=NOPASSWD: /usr/sbin/apache2ctl' | sudo tee -a /etc/sudoers
+echo 'aegir ALL=NOPASSWD: /usr/sbin/apache2ctl' | sudo tee /tmp/aegir
+sudo chmod 440 /tmp/aegir
+sudo cp /tmp/aegir /etc/sudoers.d/aegir
 #
 # MySQL: enable all IP addresses to bind
 sudo sed -i 's/bind-address/#bind-address/' /etc/mysql/my.cnf
@@ -65,11 +67,14 @@ sudo /etc/init.d/mysql restart
 sudo adduser --system --group --home /var/aegir aegir
 sudo adduser aegir www-data
 #
-# Drush install from PPA https://launchpad.net/~brianmercer/+archive/drush
-sudo apt-get install python-software-properties
-sudo add-apt-repository ppa:brianmercer/drush
-sudo apt-get update
-sudo apt-get install drush
+# Drush install
+# 
+sudo su -s /bin/sh aegir -c "
+cd /var/aegir ;
+wget http://ftp.drupal.org/files/projects/drush-7.x-4.4.tar.gz ;
+gunzip -c drush-7.x-4.4.tar.gz | tar -xf - ;
+rm drush-7.x-4.4.tar.gz ;
+"
 sudo ln -s /var/aegir/drush/drush /usr/local/bin/drush
 #
 # install provision backend by drush
