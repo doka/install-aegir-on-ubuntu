@@ -18,9 +18,9 @@ Getting started
 ---------------
 - install a bare Ubuntu server, with OpenSSH
 - login and switch to root ('sudo su')
-- set a fix IP address to the server, and adapt the hostnamein /etc/hostname
+- set a fix IP address to the server, adapt the hostname in /etc/hostname,
+  update /etc/hosts and /etc/resolv.conf, as described in the script
 - download this script
-- adjust the parameters like IP of the host
 - change access and execution rights: chmod 775 install-aegir-on-ubuntu.sh
 - execute the script
 - follow the instruction on the terminal, answer few questions during install
@@ -29,7 +29,6 @@ Getting started
 Restrictions
 ------------
 - the install script works with Aegir 1.1,
-  use the respective tag
 - Do not use on production environments
 - It has no security hardening
 
