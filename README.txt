@@ -1,6 +1,8 @@
 Aegir install script for Ubuntu 10.4 LTS (Lucid) servers
-----------------------------------------------
-https://github.com/doka/install-aegir-on-ubuntu/raw/master/install-aegir-on-ubuntu.sh
+--------------------------------------------------------
+Repo: https://github.com/doka/install-aegir-on-ubuntu/tree/lucid
+Raw script: https://raw.github.com/doka/install-aegir-on-ubuntu/lucid/install-aegir-on-ubuntu.sh
+
 
 It installs Aegir 1.1 (http://aegirproject.org/) with all prerequisites
 together on a bare Ubuntu server, on a local network.
@@ -12,6 +14,7 @@ This script helps Aegir users
 - install all software requirements
 - configure the system parameters
 - run the Aegir install script
+- apply patches if needed
 
 
 Getting started
@@ -20,7 +23,7 @@ Getting started
 - login and switch to root ('sudo su')
 - set a fix IP address to the server, adapt the hostname in /etc/hostname,
   update /etc/hosts and /etc/resolv.conf, as described in the script
-- download this script
+- switch to appropriate branch (Natty or Maverick or ...) and download the script
 - change access and execution rights: chmod 775 install-aegir-on-ubuntu.sh
 - execute the script
 - follow the instruction on the terminal, answer few questions during install
