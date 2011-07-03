@@ -2,11 +2,12 @@
 #
 # Aegir 1.1 install script for Ubuntu 10.10 (Maverick) servers
 # (install-aegir-on-ubuntu.sh)
+# script on Github: https://raw.github.com/doka/install-aegir-on-ubuntu/maverick/install-aegir-on-ubuntu.sh
 #
-# run with users having sudo rights
+# run with users with sudo rights
 #
 # this script assumes:
-#    - your hostname is: myhost.local (it should be the Aegir admin interface)
+#    - your hostname is: myhost.local (it will be the Aegir admin interface)
 #    - your IP address is: 192.168.1.101
 #
 # you can use other hostname and network parameters, but
@@ -86,6 +87,25 @@ sudo su -s /bin/sh - aegir -c "drush dl --destination=/var/aegir/.drush provisio
 echo "installing frontend: Drupal 6 with hostmaster profile ..."
 sudo su -s /bin/sh - aegir -c "drush hostmaster-install"
 #
+#
+# apply patches in drush_make 2.2
+# 1. http://drupal.org/node/947158
+#    resolves recursive make file issue if two makefiles contains the same module or project
+sudo su -s /bin/sh - aegir -c "
+wget http://drupal.org/files/issues/947158-recursive_2.patch ;
+cd /var/aegir/.drush/drush_make ;
+patch -p 1 < ~/947158-recursive_2.patch ;
+rm ~/947158-recursive_2.patch ;
+"
+# 
+# 2. http://drupal.org/node/745224
+#    Apply patches from git diff and git format-patch (p0 - p1)
+sudo su -s /bin/sh - aegir -c "
+wget http://drupal.org/files/issues/drush_make-745224-git-apply-104.patch ;
+cd /var/aegir/.drush/drush_make ;
+patch -p 1 < ~/drush_make-745224-git-apply-104.patch ;
+rm ~/drush_make-745224-git-apply-104.patch ;
+"
 #
 # Checkpoint / Finished!
 #
