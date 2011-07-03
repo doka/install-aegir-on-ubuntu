@@ -1,6 +1,8 @@
 Aegir 1.1 install script for Ubuntu 11.04 (Natty) servers
 ---------------------------------------------------------
-https://github.com/doka/install-aegir-on-ubuntu/raw/master/install-aegir-on-ubuntu.sh
+Repo: https://github.com/doka/install-aegir-on-ubuntu/tree/natty
+Raw script: https://raw.github.com/doka/install-aegir-on-ubuntu/natty/install-aegir-on-ubuntu.sh
+
 
 It installs Aegir 1.1 (http://aegirproject.org/) with all prerequisites
 together on a bare Ubuntu server, on a local network.
@@ -12,15 +14,16 @@ This script helps Aegir users
 - install all software requirements
 - configure the system parameters
 - run the Aegir install script
+- apply patches if needed
 
 
 Getting started
 ---------------
 - install a bare Ubuntu server, with OpenSSH
 - login and switch to root ('sudo su')
-- set a fix IP address to the server, and adapt the hostnamein /etc/hostname
-- download this script
-- adjust the parameters like IP of the host
+- set a fix IP address to the server, adapt the hostname in /etc/hostname,
+  update /etc/hosts and /etc/resolv.conf, as described in the script
+- switch to appropriate branch (Natty or Maverick or ...) and download the script
 - change access and execution rights: chmod 775 install-aegir-on-ubuntu.sh
 - execute the script
 - follow the instruction on the terminal, answer few questions during install
@@ -29,7 +32,6 @@ Getting started
 Restrictions
 ------------
 - the install script works with Aegir 1.1,
-  use the respective tag
 - Do not use on production environments
 - It has no security hardening
 
@@ -42,4 +44,5 @@ Maintainers
 Credits
 -------
 http://aegirproject.org/
+
 
