@@ -107,8 +107,10 @@ echo "installing frontend: Drupal 6 with hostmaster profile ..."
 sudo su -s /bin/sh - aegir -c "drush hostmaster-install"
 #
 #
-# apply patches to drush_make 2.2
-if [ "$AEGIR_VERSION" == "6.x-1.1" || "$AEGIR_VERSION" == "6.x-1.2"] ; then
+# apply patches to drush_make
+#
+# Aegir 6.x-1.1 and 6.x-1.2 is using drush_make 6.x-2.2
+if [ "$AEGIR_VERSION" == "6.x-1.1" ] || [ "$AEGIR_VERSION" == "6.x-1.2" ] ; then
 # 1. http://drupal.org/node/947158
 #    resolves recursive make file issue if two makefiles contains the same module
   sudo su -s /bin/sh - aegir -c "
@@ -126,8 +128,9 @@ if [ "$AEGIR_VERSION" == "6.x-1.1" || "$AEGIR_VERSION" == "6.x-1.2"] ; then
   patch -p 1 < ~/drush_make-745224-git-apply-104.patch ;
   rm ~/drush_make-745224-git-apply-104.patch ;
   "
-elif [ "$AEGIR_VERSION" == "6.x-1.3" || "$AEGIR_VERSION" == "6.x-1.4"] ; then
-
+#
+# Aegir 6.x-1.3 and 6.x-1.4 is using drush_make 6.x-2.3
+elif [ "$AEGIR_VERSION" == "6.x-1.3" ] || [ "$AEGIR_VERSION" == "6.x-1.4" ] ; then
 # 1. http://drupal.org/node/1253414
 #    Allows to use different versions of the same project in nested make files
   sudo su -s /bin/sh - aegir -c "
@@ -137,9 +140,8 @@ elif [ "$AEGIR_VERSION" == "6.x-1.3" || "$AEGIR_VERSION" == "6.x-1.4"] ; then
   rm ~/1253414-allow-multiple-module-versions_0.patch ;
   "
 # 
-
 else
-
+  echo "unknown AEGIR_VERSION=$AEGIR_VERSION"
 fi
 
 #
