@@ -2,7 +2,7 @@
 #
 # Aegir 1.x install script for Ubuntu servers
 # (install-aegir-on-ubuntu.sh)
-# script on Github: https://raw.github.com/doka/install-aegir-on-ubuntu/master/install-aegir-on-ubuntu.sh 
+# on Github: https://github.com/doka/install-aegir-on-ubuntu 
 #
 # run with users with sudo rights
 #
@@ -39,6 +39,9 @@
 #       nameserver 192.168.1.101
 #       nameserver 8.8.8.8
 #
+#  - copy this script to the remote server and make it executable
+#       chmod 750 ./install-aegir-on-ubuntu.sh
+#
 #  and reboot your server!
 #
 #
@@ -48,7 +51,8 @@ DRUSH_VERSION="7.x-4.5"
 #DRUSH_VERSION="7.x-4.4"
 #
 # Aegir
-AEGIR_VERSION="6.x-1.4"
+AEGIR_VERSION="6.x-1.5"
+#AEGIR_VERSION="6.x-1.4"
 #AEGIR_VERSION="6.x-1.3"
 #AEGIR_VERSION="6.x-1.2"
 #AEGIR_VERSION="6.x-1.1"
@@ -59,7 +63,7 @@ AEGIR_VERSION="6.x-1.4"
 #
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install apache2 php5 php5-cli php5-gd php5-mysql mysql-server postfix git-core unzip bind9
+sudo apt-get install apache2 php5 php5-cli php5-gd php5-mysql mysql-server postfix git-core unzip
 #
 #
 #    2. LAMP configurations
@@ -82,9 +86,8 @@ sudo /etc/init.d/mysql restart
 sudo adduser --system --group --home /var/aegir aegir
 sudo adduser aegir www-data
 #
-# sudo rights for the Aegir user to restart Apache and Bind
-echo 'aegir ALL=NOPASSWD: /usr/sbin/apache2ctl
-aegir ALL=NOPASSWD: /etc/init.d/bind9' | sudo tee /tmp/aegir
+# sudo rights for the Aegir user to restart Apache
+echo 'aegir ALL=NOPASSWD: /usr/sbin/apache2ctl' | sudo tee /tmp/aegir
 sudo chmod 440 /tmp/aegir
 sudo cp /tmp/aegir /etc/sudoers.d/aegir
 #
@@ -129,8 +132,8 @@ if [ "$AEGIR_VERSION" == "6.x-1.1" ] || [ "$AEGIR_VERSION" == "6.x-1.2" ] ; then
   rm ~/drush_make-745224-git-apply-104.patch ;
   "
 #
-# Aegir 6.x-1.3 and 6.x-1.4 is using drush_make 6.x-2.3
-elif [ "$AEGIR_VERSION" == "6.x-1.3" ] || [ "$AEGIR_VERSION" == "6.x-1.4" ] ; then
+# Aegir 6.x-1.3 - 6.x-1.5 is using drush_make 6.x-2.3
+elif [ "$AEGIR_VERSION" == "6.x-1.3" ] || [ "$AEGIR_VERSION" == "6.x-1.4" ] || [ "$AEGIR_VERSION" == "6.x-1.5" ]; then
 # 1. http://drupal.org/node/1253414
 #    Allows to use different versions of the same project in nested make files
   sudo su -s /bin/sh - aegir -c "
@@ -143,9 +146,10 @@ elif [ "$AEGIR_VERSION" == "6.x-1.3" ] || [ "$AEGIR_VERSION" == "6.x-1.4" ] ; th
 else
   echo "unknown AEGIR_VERSION=$AEGIR_VERSION"
 fi
-
 #
-# Checkpoint / Finished!
+echo "Checkpoint / But not yet finished!
+#
+# Checkpoint / But not yet finished!
 #
 # The installation will provide you with a one-time login URL to stdout
 # or via an e-mail. Use this link to login to your new Aegir site for the 
@@ -154,6 +158,13 @@ fi
 # Do not forget to add all the domains you are going to manage by Aegir,
 # to your /etc/hosts files on every boxes your are using!
 # 
+# Create your SSH public id and copy it to remote servers, if you use this
+# feature by
+#    ssh-keygen -t rsa
+#    ssh-copy-id <myhost.local>
+#    ssh <myhost.local> 
+#
 # You can switch to the aegir user by: 
 #     sudo su -s /bin/bash - aegir
 #
+'
