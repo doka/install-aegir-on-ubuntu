@@ -87,7 +87,9 @@ echo 'aegir ALL=NOPASSWD: /usr/sbin/apache2ctl' | sudo tee /tmp/aegir
 sudo chmod 440 /tmp/aegir
 sudo cp /tmp/aegir /etc/sudoers.d/aegir
 #
-#
+# generate SSH keys for the aegir user
+sudo su -s /bin/sh - aegir -c "ssh-keygen -t rsa"
+
 # Drush install
 # 
 sudo su -s /bin/sh - aegir -c "
