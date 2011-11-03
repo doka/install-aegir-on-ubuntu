@@ -4,8 +4,8 @@
 # (install-remote-webserver.sh <AEGIR-SERVER-IP>)
 # on Github: https://github.com/doka/install-aegir-on-ubuntu 
 #
-# run with users with sudo rights
-# sudo ./install-remote-webserver.sh <AEGIR-MASTER-SERVER-IP>
+# run with users with sudo rights:
+# ./install-remote-webserver.sh <AEGIR-MASTER-SERVER-IP>
 #
 # this script assumes:
 #    - it has one paramater, which is the IP of the Aegir master server ($1)
@@ -72,7 +72,8 @@ sudo ln -s /var/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
 # MySQL
 #   enable all IP addresses to bind
 sudo sed -i 's/bind-address/#bind-address/' /etc/mysql/my.cnf
-sudo /etc/init.d/mysql restart
+sudo service mysql restart
+#
 #   authorize the Aegir master server to access the database
 read -s -p "MySQL password for Aegir: " MYSQLPWD; echo 
 SQL="GRANT ALL PRIVILEGES ON *.* TO root@'$1' IDENTIFIED BY '$MYSQLPWD' WITH GRANT OPTION;FLUSH PRIVILEGES;"
@@ -128,7 +129,7 @@ echo "Checkpoint / But not yet finished!
 #    and create platforms and sites.
 #
 # You can switch to the aegir user by: 
-#     sudo su -s /bin/sh - aegir
+#     sudo su -s /bin/bash - aegir
 #
 # good luck!
 #
