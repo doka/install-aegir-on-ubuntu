@@ -4,25 +4,18 @@
 # (install-aegir-on-ubuntu.sh)
 # on Github: https://github.com/doka/install-aegir-on-ubuntu 
 #
-# run with users with sudo rights
-#
-# this script assumes:
-#    - your hostname is: myhost.local (it will be the Aegir admin interface)
-#    - your IP address is: 192.168.1.101
-#
-# you can use other hostname and network parameters, but
-# your hostname has to be a full qualified domain name (FQDN) 
+# This script assumes:
+#  - your hostname is: myhost.local (it will be the Aegir admin interface)
+#  - your IP address is: 192.168.1.101
+#  - you can use other hostname and network parameters, but your hostname has
+#    to be a full qualified domain name (FQDN)
 #
 # Prerequisites:
-#  you run this script on a bare ubuntu server install, with OpenSSH server
+#  - you run this script on a bare ubuntu server, only extra is OpenSSH server
+#   
+#  - you run this script with a user having sudo rights
 #
-#  you have done the following changes on that server
-#  
-#  - change the hostname 
-#        delete the old hostname, and write your hostname (myhost.local) into
-#        /etc/hostname
-#
-#  - change to static IP address in /etc/network/interfaces
+#  - you have set static IP address in /etc/network/interfaces like this:
 #       auto eth0
 #       iface eth0 inet static
 #       address 192.168.1.101
@@ -30,33 +23,36 @@
 #       netmask 255.255.255.0
 #       gateway 192.168.1.1
 #
+#  - change the hostname 
+#        delete the old hostname, and write your hostname (myhost.local)
+#        into /etc/hostname
+#        echo 'myhost.local' | sudo tee /etc/hostname
+#
 #  - update /etc/hosts
-#       add following line to the end:
-#       192.168.1.101    myhost.local  myhost
+#       add following line: 192.168.1.101    myhost.local
+#       echo '192.168.2.101 myhost.local' | sudo tee -a /etc/hosts
 #
-#  - update /etc/resolv.conf
-#       add following line to the end:
-#       nameserver 192.168.1.101
-#       nameserver 8.8.8.8
+#  - reboot your server!
 #
-#  - copy this script to the remote server and make it executable
+#  - copy this script to the ubuntu server and make it executable
+#       wget https://raw.github.com/doka/install-aegir-on-ubuntu/master/install-aegir-on-ubuntu.sh
 #       chmod 750 ./install-aegir-on-ubuntu.sh
 #
-#  and reboot your server!
 #
-#
-# set versions
-# drush
+# ***********************************
+# set versions Aegir & Drush versions
 DRUSH_VERSION="7.x-4.5"
 #DRUSH_VERSION="7.x-4.4"
 #
-# Aegir
 AEGIR_VERSION="6.x-1.5"
 #AEGIR_VERSION="6.x-1.4"
 #AEGIR_VERSION="6.x-1.3"
 #AEGIR_VERSION="6.x-1.2"
 #AEGIR_VERSION="6.x-1.1"
+#AEGIR_VERSION="6.x-1.0"
+# ***********************************
 #
+# 
 #    1. install software requirements by Aegir, but not preinstalled on a bare
 #       Ubuntu server. Set the root password for MySQL, and accept the defaults
 #       at postfix install (Internet site, ...)
@@ -77,7 +73,7 @@ sudo ln -s /var/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
 #
 # MySQL: enable all IP addresses to bind
 sudo sed -i 's/bind-address/#bind-address/' /etc/mysql/my.cnf
-sudo /etc/init.d/mysql restart
+sudo service mysql restart
 #
 #
 #   3. Aegir install
@@ -112,8 +108,8 @@ sudo su -s /bin/sh - aegir -c "drush hostmaster-install"
 #
 # apply patches to drush_make
 #
-# Aegir 6.x-1.1 and 6.x-1.2 is using drush_make 6.x-2.2
-if [ "$AEGIR_VERSION" == "6.x-1.1" ] || [ "$AEGIR_VERSION" == "6.x-1.2" ] ; then
+# Aegir 6.x-1.0 - 6.x-1.2 is using drush_make 6.x-2.2
+if [ "$AEGIR_VERSION" == "6.x-1.0" ] || [ "$AEGIR_VERSION" == "6.x-1.1" ] || [ "$AEGIR_VERSION" == "6.x-1.2" ] ; then
 # 1. http://drupal.org/node/947158
 #    resolves recursive make file issue if two makefiles contains the same module
   sudo su -s /bin/sh - aegir -c "
@@ -167,4 +163,4 @@ echo "Checkpoint / But not yet finished!
 # You can switch to the aegir user by: 
 #     sudo su -s /bin/bash - aegir
 #
-'
+"
