@@ -44,7 +44,8 @@
 DRUSH_VERSION="7.x-4.5"
 #DRUSH_VERSION="7.x-4.4"
 #
-AEGIR_VERSION="6.x-1.5"
+AEGIR_VERSION="6.x-1.6"
+#AEGIR_VERSION="6.x-1.5"
 #AEGIR_VERSION="6.x-1.4"
 #AEGIR_VERSION="6.x-1.3"
 #AEGIR_VERSION="6.x-1.2"
@@ -106,6 +107,11 @@ sudo su -s /bin/sh - aegir -c "drush dl --destination=/var/aegir/.drush provisio
 # install hostmaster frontend by drush, incl drush_make
 echo "installing frontend: Drupal 6 with hostmaster profile ..."
 sudo su -s /bin/sh - aegir -c "drush hostmaster-install"
+echo "
+Aegir install ready, above you have the login link!
+
+Now we are patching...
+"
 #
 #
 # apply patches to drush_make
@@ -130,8 +136,8 @@ if [ "$AEGIR_VERSION" == "6.x-1.0" ] || [ "$AEGIR_VERSION" == "6.x-1.1" ] || [ "
   rm ~/drush_make-745224-git-apply-104.patch ;
   "
 #
-# Aegir 6.x-1.3 - 6.x-1.5 is using drush_make 6.x-2.3
-elif [ "$AEGIR_VERSION" == "6.x-1.3" ] || [ "$AEGIR_VERSION" == "6.x-1.4" ] || [ "$AEGIR_VERSION" == "6.x-1.5" ]; then
+# from Aegir 6.x-1.3 drush_make 6.x-2.3 is used
+else
 # 1. http://drupal.org/node/1253414
 #    Allows to use different versions of the same project in nested make files
   sudo su -s /bin/sh - aegir -c "
@@ -141,28 +147,24 @@ elif [ "$AEGIR_VERSION" == "6.x-1.3" ] || [ "$AEGIR_VERSION" == "6.x-1.4" ] || [
   rm ~/1253414-allow-multiple-module-versions_0.patch ;
   "
 # 
-else
-  echo "unknown AEGIR_VERSION=$AEGIR_VERSION"
 fi
 #
-echo "Checkpoint / But not yet finished!
+echo "
 #
 # Checkpoint / But not yet finished!
 #
-# The installation will provide you with a one-time login URL to stdout
-# or via an e-mail. Use this link to login to your new Aegir site for the 
-# first time.
+# The installation has provided you with a one-time login URL to stdout
+# (see above), or via an e-mail. Use this link to login to your new Aegir site
+# for the first time.
 #
-# Do not forget to add all the domains you are going to manage by Aegir,
-# to your /etc/hosts files on every boxes your are using!
+# 1. Do not forget to add all the domains you are going to manage by Aegir,
+#    to your /etc/hosts files on every boxes your are using!
 # 
-# Create your SSH public id and copy it to remote servers, if you use this
-# feature by
-#    ssh-keygen -t rsa
-#    ssh-copy-id <myhost.local>
-#    ssh <myhost.local> 
+# 2. Copy your public id to remote servers, if you use any remote servers:
+#      ssh-copy-id <myhost.local>
+#      ssh <myhost.local> 
 #
-# You can switch to the aegir user by: 
-#     sudo su -s /bin/bash - aegir
+# 3. You can switch to the aegir user by: 
+#      sudo su -s /bin/bash - aegir
 #
 "
