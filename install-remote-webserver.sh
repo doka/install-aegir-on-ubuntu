@@ -55,7 +55,7 @@ fi
 #
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install rsync apache2 php5 php5-cli php5-mysql postfix mysql-client mysql-server
+sudo apt-get install rsync apache2 php5 php5-cli php5-mysql postfix mysql-client mysql-server php5-gd
 #
 #
 #    2. LAMP configurations
