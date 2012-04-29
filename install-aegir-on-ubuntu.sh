@@ -75,8 +75,10 @@ sudo a2enmod rewrite
 sudo ln -s /var/aegir/config/apache.conf /etc/apache2/conf.d/aegir.conf
 #
 # MySQL: enable all IP addresses to bind
-sudo sed -i 's/bind-address/#bind-address/' /etc/mysql/my.cnf
-sudo service mysql restart
+# sudo sed -i 's/bind-address/#bind-address/' /etc/mysql/my.cnf
+# sudo service mysql restart
+# MySQL: using secure install script instead
+sudo mysql_secure_installation
 #
 #
 #   3. Aegir install
